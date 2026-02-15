@@ -1,0 +1,2640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Club & Events Management System</title>
+    <style>
+        /* Import Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap');
+
+        /* CSS Variables */
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #0f3460;
+            --accent: #e94560;
+            --accent-light: #ff6b88;
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1a1a2e;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--bg-primary);
+            border-bottom: 2px solid var(--primary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .navbar-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Archivo', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-light);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Space Mono', monospace;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: 'Archivo', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-success {
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-primary {
+            background: rgba(26, 26, 46, 0.1);
+            color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gap-1 {
+            gap: 0.5rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 4rem 0;
+            }
+        }
+
+        /* Page Sections */
+        .page-section {
+            padding: 3rem 0;
+        }
+
+        /* Auth Pages */
+        .auth-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            max-width: 500px;
+            width: 100%;
+            padding: 3rem;
+        }
+
+        /* Dashboard Sidebar */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: calc(100vh - 73px);
+        }
+
+        .sidebar {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 1rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .main-content {
+            padding: 2rem;
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+
+        /* Image Placeholder */
+        .img-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="navbar-brand" onclick="showPage('home')">
+                <span class="brand-dot"></span>
+                ClubHub
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <!-- Dynamic nav links will be inserted here -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div id="mainContent">
+        <!-- Pages will be loaded here dynamically -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h3 class="navbar-brand" style="color: white; justify-content: center; margin-bottom: 1rem;">
+                <span class="brand-dot"></span>
+                ClubHub
+            </h3>
+            <p>Empowering student communities, one club at a time.</p>
+            <p style="opacity: 0.6; font-size: 0.9rem; margin-top: 1rem;">
+                &copy; 2026 College Club & Events Management System
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modalContainer"></div>
+
+    <script>
+        // ========================================
+        // DATA STORE (Simulated Database)
+        // ========================================
+        const DataStore = {
+            users: [
+                { id: 1, name: 'Admin User', email: 'admin@college.edu', password: 'admin123', role: 'admin', department: 'Administration', year: null, phone: '1234567890' },
+                { id: 2, name: 'Rahul Sharma', email: 'rahul@college.edu', password: 'password123', role: 'student', department: 'Computer Science', year: 3, phone: '9876543210' },
+                { id: 3, name: 'Priya Patel', email: 'priya@college.edu', password: 'password123', role: 'student', department: 'Electronics', year: 2, phone: '9876543211' },
+                { id: 4, name: 'Amit Kumar', email: 'amit@college.edu', password: 'password123', role: 'student', department: 'Mechanical', year: 4, phone: '9876543212' },
+            ],
+            clubs: [
+                { id: 1, name: 'Coding Club', description: 'A community for programming enthusiasts. We organize hackathons, coding competitions, and tech talks.', category: 'Technical', faculty_coordinator: 'Dr. Rajesh Kumar', student_head_id: 2, established_date: '2020-08-15' },
+                { id: 2, name: 'Drama Club', description: 'Express yourself through theater and performing arts. Annual plays, street plays, and drama workshops.', category: 'Cultural', faculty_coordinator: 'Prof. Meera Shah', student_head_id: 3, established_date: '2018-07-10' },
+                { id: 3, name: 'Photography Club', description: 'Capture moments and learn the art of photography. Weekly photo walks and editing workshops.', category: 'Arts', faculty_coordinator: 'Dr. Anand Verma', student_head_id: 4, established_date: '2019-09-20' },
+                { id: 4, name: 'Robotics Club', description: 'Build, program, and compete with robots. Participate in national robotics competitions.', category: 'Technical', faculty_coordinator: 'Dr. Suresh Babu', student_head_id: 2, established_date: '2021-01-05' },
+                { id: 5, name: 'Music Club', description: 'For music lovers and musicians. Jam sessions, concerts, and music production workshops.', category: 'Cultural', faculty_coordinator: 'Prof. Kavita Iyer', student_head_id: 3, established_date: '2017-06-12' },
+            ],
+            events: [
+                { id: 1, club_id: 1, name: 'HackFest 2026', description: '24-hour coding marathon. Build innovative solutions to real-world problems.', event_date: '2026-03-15', event_time: '09:00', venue: 'Computer Lab Block A', max_participants: 100, registration_deadline: '2026-03-10', created_by: 2 },
+                { id: 2, club_id: 1, name: 'Web Development Workshop', description: 'Learn modern web technologies - HTML, CSS, JavaScript, and React.', event_date: '2026-02-25', event_time: '14:00', venue: 'Seminar Hall 1', max_participants: 50, registration_deadline: '2026-02-20', created_by: 2 },
+                { id: 3, club_id: 2, name: 'Annual Drama Festival', description: 'Showcase of theatrical performances by students. Three original plays and a musical.', event_date: '2026-04-10', event_time: '18:00', venue: 'College Auditorium', max_participants: 200, registration_deadline: '2026-04-05', created_by: 3 },
+                { id: 4, club_id: 3, name: 'Photography Exhibition', description: 'Display of stunning photographs captured by club members.', event_date: '2026-03-01', event_time: '10:00', venue: 'Art Gallery', max_participants: 150, registration_deadline: '2026-02-25', created_by: 4 },
+                { id: 5, club_id: 5, name: 'Live Music Concert', description: 'Evening of live performances by talented student musicians.', event_date: '2026-02-28', event_time: '19:00', venue: 'Open Air Theater', max_participants: 300, registration_deadline: '2026-02-23', created_by: 3 },
+            ],
+            clubMembers: [
+                { id: 1, club_id: 1, user_id: 2, status: 'approved', role: 'head', joined_date: '2023-08-15' },
+                { id: 2, club_id: 1, user_id: 3, status: 'approved', role: 'member', joined_date: '2023-09-01' },
+                { id: 3, club_id: 2, user_id: 3, status: 'approved', role: 'head', joined_date: '2023-08-20' },
+                { id: 4, club_id: 2, user_id: 4, status: 'approved', role: 'member', joined_date: '2023-09-05' },
+                { id: 5, club_id: 3, user_id: 4, status: 'approved', role: 'head', joined_date: '2023-08-25' },
+                { id: 6, club_id: 1, user_id: 4, status: 'pending', role: 'member', joined_date: null },
+            ],
+            eventRegistrations: [
+                { id: 1, event_id: 1, user_id: 3, status: 'registered', registration_date: new Date() },
+                { id: 2, event_id: 1, user_id: 4, status: 'registered', registration_date: new Date() },
+                { id: 3, event_id: 2, user_id: 4, status: 'registered', registration_date: new Date() },
+            ],
+            notifications: [
+                { id: 1, user_id: 2, title: 'Welcome to Coding Club!', message: 'Your membership has been approved.', type: 'club_approval', is_read: false, created_at: new Date() },
+                { id: 2, user_id: 3, title: 'New Event: HackFest 2026', message: 'Coding Club is organizing HackFest 2026 on March 15.', type: 'event_created', is_read: false, created_at: new Date() },
+            ],
+            currentUser: null,
+            nextId: {
+                users: 5,
+                clubs: 6,
+                events: 6,
+                clubMembers: 7,
+                eventRegistrations: 4,
+                notifications: 3,
+            }
+        };
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        const Utils = {
+            setCurrentUser(user) {
+                DataStore.currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            },
+
+            getCurrentUser() {
+                if (!DataStore.currentUser) {
+                    const stored = localStorage.getItem('currentUser');
+                    DataStore.currentUser = stored ? JSON.parse(stored) : null;
+                }
+                return DataStore.currentUser;
+            },
+
+            logout() {
+                DataStore.currentUser = null;
+                localStorage.removeItem('currentUser');
+                showPage('home');
+                updateNavigation();
+            },
+
+            isLoggedIn() {
+                return this.getCurrentUser() !== null;
+            },
+
+            isAdmin() {
+                const user = this.getCurrentUser();
+                return user && user.role === 'admin';
+            },
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            },
+
+            formatTime(timeString) {
+                const [hours, minutes] = timeString.split(':');
+                const hour = parseInt(hours);
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour % 12 || 12;
+                return `${displayHour}:${minutes} ${ampm}`;
+            },
+
+            truncate(text, length) {
+                if (text.length <= length) return text;
+                return text.substring(0, length) + '...';
+            },
+
+            showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `alert alert-${type} toast`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            },
+
+            getClubById(id) {
+                return DataStore.clubs.find(c => c.id === parseInt(id));
+            },
+
+            getEventById(id) {
+                return DataStore.events.find(e => e.id === parseInt(id));
+            },
+
+            getClubMembers(clubId) {
+                return DataStore.clubMembers.filter(cm => cm.club_id === parseInt(clubId));
+            },
+
+            getMemberCount(clubId) {
+                return DataStore.clubMembers.filter(cm => cm.club_id === parseInt(clubId) && cm.status === 'approved').length;
+            },
+
+            getEventRegistrationCount(eventId) {
+                return DataStore.eventRegistrations.filter(er => er.event_id === parseInt(eventId)).length;
+            },
+
+            getUserClubs(userId) {
+                const memberships = DataStore.clubMembers.filter(cm => cm.user_id === userId);
+                return memberships.map(m => {
+                    const club = this.getClubById(m.club_id);
+                    return { ...club, status: m.status, member_role: m.role };
+                });
+            },
+
+            getUserEvents(userId) {
+                const registrations = DataStore.eventRegistrations.filter(er => er.user_id === userId);
+                return registrations.map(r => {
+                    const event = this.getEventById(r.event_id);
+                    const club = this.getClubById(event.club_id);
+                    return { ...event, club_name: club.name, registration_status: r.status };
+                });
+            },
+
+            isUserInClub(clubId, userId) {
+                return DataStore.clubMembers.some(cm => cm.club_id === clubId && cm.user_id === userId);
+            },
+
+            isUserRegisteredForEvent(eventId, userId) {
+                return DataStore.eventRegistrations.some(er => er.event_id === eventId && er.user_id === userId);
+            }
+        };
+
+        // ========================================
+        // NAVIGATION
+        // ========================================
+        function updateNavigation() {
+            const navLinks = document.getElementById('navLinks');
+            const user = Utils.getCurrentUser();
+
+            if (!user) {
+                navLinks.innerHTML = `
+                    <li><a onclick="showPage('home')">Home</a></li>
+                    <li><a onclick="showPage('clubs')">Clubs</a></li>
+                    <li><a onclick="showPage('events')">Events</a></li>
+                    <li><a onclick="showPage('login')" class="btn btn-primary btn-sm">Login</a></li>
+                    <li><a onclick="showPage('register')" class="btn btn-accent btn-sm">Register</a></li>
+                `;
+            } else if (user.role === 'admin') {
+                navLinks.innerHTML = `
+                    <li><a onclick="showPage('admin-dashboard')">Dashboard</a></li>
+                    <li><a onclick="showPage('clubs')">Clubs</a></li>
+                    <li><a onclick="showPage('events')">Events</a></li>
+                    <li><a onclick="Utils.logout()" class="btn btn-outline btn-sm">Logout</a></li>
+                `;
+            } else {
+                navLinks.innerHTML = `
+                    <li><a onclick="showPage('student-dashboard')">Dashboard</a></li>
+                    <li><a onclick="showPage('clubs')">Clubs</a></li>
+                    <li><a onclick="showPage('events')">Events</a></li>
+                    <li><span style="color: var(--text-secondary);">Hi, ${user.name.split(' ')[0]}</span></li>
+                    <li><a onclick="Utils.logout()" class="btn btn-outline btn-sm">Logout</a></li>
+                `;
+            }
+        }
+
+        // ========================================
+        // PAGE RENDERING
+        // ========================================
+        function showPage(page, params = {}) {
+            const mainContent = document.getElementById('mainContent');
+            
+            switch(page) {
+                case 'home':
+                    renderHomePage();
+                    break;
+                case 'login':
+                    renderLoginPage();
+                    break;
+                case 'register':
+                    renderRegisterPage();
+                    break;
+                case 'clubs':
+                    renderClubsPage();
+                    break;
+                case 'club-details':
+                    renderClubDetailsPage(params.id);
+                    break;
+                case 'events':
+                    renderEventsPage();
+                    break;
+                case 'event-details':
+                    renderEventDetailsPage(params.id);
+                    break;
+                case 'student-dashboard':
+                    renderStudentDashboard();
+                    break;
+                case 'admin-dashboard':
+                    renderAdminDashboard();
+                    break;
+                default:
+                    renderHomePage();
+            }
+        }
+
+        // ========================================
+        // HOME PAGE
+        // ========================================
+        function renderHomePage() {
+            const mainContent = document.getElementById('mainContent');
+            const featuredClubs = DataStore.clubs.slice(0, 3);
+            const upcomingEvents = DataStore.events.filter(e => new Date(e.event_date) >= new Date()).slice(0, 3);
+
+            mainContent.innerHTML = `
+                <section class="hero">
+                    <div class="container">
+                        <h1>Connect, Create, Celebrate</h1>
+                        <p>Join vibrant student clubs, discover exciting events, and make your college experience unforgettable.</p>
+                        <div class="hero-actions">
+                            <a onclick="showPage('clubs')" class="btn btn-accent" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                                Explore Clubs
+                            </a>
+                            <a onclick="showPage('events')" class="btn btn-outline" style="font-size: 1.1rem; padding: 1rem 2rem; background: transparent; border-color: white; color: white;">
+                                View Events
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-section">
+                    <div class="container">
+                        <h2 class="text-center mb-3">Why Choose ClubHub?</h2>
+                        <div class="card-grid">
+                            <div class="card text-center">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
+                                <h3>Diverse Clubs</h3>
+                                <p style="color: var(--text-secondary);">From tech to arts, sports to culture - find clubs that match your passion.</p>
+                            </div>
+                            <div class="card text-center">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">📅</div>
+                                <h3>Easy Event Management</h3>
+                                <p style="color: var(--text-secondary);">Discover, register, and participate in campus events with ease.</p>
+                            </div>
+                            <div class="card text-center">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                                <h3>Build Your Network</h3>
+                                <p style="color: var(--text-secondary);">Connect with like-minded students and expand your circle.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-section" style="background: var(--bg-primary);">
+                    <div class="container">
+                        <div class="flex-between mb-3">
+                            <h2>Featured Clubs</h2>
+                            <a onclick="showPage('clubs')" class="btn btn-outline">View All →</a>
+                        </div>
+                        <div class="card-grid">
+                            ${featuredClubs.map(club => `
+                                <div class="card">
+                                    <div class="img-placeholder">🎯</div>
+                                    <span class="badge badge-primary">${club.category}</span>
+                                    <h3 style="margin: 0.75rem 0;">${club.name}</h3>
+                                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                        ${Utils.truncate(club.description, 100)}
+                                    </p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                        <span class="badge badge-success">${Utils.getMemberCount(club.id)} members</span>
+                                        <a onclick="showPage('club-details', {id: ${club.id}})" class="btn btn-sm btn-outline">View Details →</a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-section">
+                    <div class="container">
+                        <div class="flex-between mb-3">
+                            <h2>Upcoming Events</h2>
+                            <a onclick="showPage('events')" class="btn btn-outline">View All →</a>
+                        </div>
+                        <div class="card-grid">
+                            ${upcomingEvents.map(event => {
+                                const club = Utils.getClubById(event.club_id);
+                                return `
+                                    <div class="card">
+                                        <div class="img-placeholder" style="background: linear-gradient(135deg, #e94560, #ff6b88); color: white;">🎉</div>
+                                        <h3 style="margin-bottom: 1rem;">${event.name}</h3>
+                                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                            📅 ${Utils.formatDate(event.event_date)}
+                                        </p>
+                                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                            🕐 ${Utils.formatTime(event.event_time)}
+                                        </p>
+                                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                            📍 ${event.venue}
+                                        </p>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                            <span style="color: var(--text-secondary); font-size: 0.875rem;">By ${club.name}</span>
+                                            <a onclick="showPage('event-details', {id: ${event.id}})" class="btn btn-sm btn-accent">View Details →</a>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // ========================================
+        // LOGIN PAGE
+        // ========================================
+        function renderLoginPage() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="auth-container">
+                    <div class="auth-card card">
+                        <h2>Sign In</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Welcome back to ClubHub</p>
+                        <div id="loginAlert"></div>
+                        <form onsubmit="handleLogin(event)">
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-input" name="email" required placeholder="you@college.edu">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-input" name="password" required placeholder="Enter your password">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                                Sign In
+                            </button>
+                        </form>
+                        <p style="margin-top: 2rem; text-align: center; color: var(--text-secondary);">
+                            Don't have an account? <a onclick="showPage('register')" style="color: var(--accent); font-weight: 600; cursor: pointer;">Register</a>
+                        </p>
+                        <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; font-size: 0.875rem;">
+                            <strong>Demo Credentials:</strong><br>
+                            Admin: admin@college.edu / admin123<br>
+                            Student: rahul@college.edu / password123
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            const user = DataStore.users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                Utils.setCurrentUser(user);
+                Utils.showToast('Login successful!', 'success');
+                updateNavigation();
+                
+                if (user.role === 'admin') {
+                    showPage('admin-dashboard');
+                } else {
+                    showPage('student-dashboard');
+                }
+            } else {
+                document.getElementById('loginAlert').innerHTML = 
+                    '<div class="alert alert-error">Invalid email or password</div>';
+            }
+        }
+
+        // ========================================
+        // REGISTER PAGE
+        // ========================================
+        function renderRegisterPage() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="auth-container">
+                    <div class="auth-card card">
+                        <h2>Create Account</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Join the ClubHub community</p>
+                        <div id="registerAlert"></div>
+                        <form onsubmit="handleRegister(event)">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-input" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-input" name="email" required>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Department</label>
+                                    <select class="form-select" name="department" required>
+                                        <option value="">Select</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Civil">Civil</option>
+                                        <option value="Information Technology">IT</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Year</label>
+                                    <select class="form-select" name="year" required>
+                                        <option value="">Select</option>
+                                        <option value="1">First Year</option>
+                                        <option value="2">Second Year</option>
+                                        <option value="3">Third Year</option>
+                                        <option value="4">Fourth Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-input" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-input" name="password" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                                Create Account
+                            </button>
+                        </form>
+                        <p style="margin-top: 2rem; text-align: center; color: var(--text-secondary);">
+                            Already have an account? <a onclick="showPage('login')" style="color: var(--accent); font-weight: 600; cursor: pointer;">Sign In</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const newUser = {
+                id: DataStore.nextId.users++,
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: 'student',
+                department: formData.get('department'),
+                year: parseInt(formData.get('year')),
+                phone: formData.get('phone')
+            };
+
+            // Check if email exists
+            if (DataStore.users.some(u => u.email === newUser.email)) {
+                document.getElementById('registerAlert').innerHTML = 
+                    '<div class="alert alert-error">Email already registered</div>';
+                return;
+            }
+
+            DataStore.users.push(newUser);
+            Utils.showToast('Registration successful! Please login.', 'success');
+            showPage('login');
+        }
+
+        // ========================================
+        // CLUBS PAGE
+        // ========================================
+        function renderClubsPage() {
+            const mainContent = document.getElementById('mainContent');
+            
+            mainContent.innerHTML = `
+                <div class="container page-section">
+                    <div class="flex-between mb-3">
+                        <div>
+                            <h1>Explore Clubs</h1>
+                            <p style="color: var(--text-secondary);">Find clubs that match your interests</p>
+                        </div>
+                        <input type="search" id="clubSearch" placeholder="Search clubs..." class="form-input" style="width: 300px;" oninput="filterClubs(this.value)">
+                    </div>
+                    <div id="clubsContainer" class="card-grid">
+                        ${renderClubCards(DataStore.clubs)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderClubCards(clubs) {
+            if (clubs.length === 0) {
+                return '<p style="text-align: center; grid-column: 1/-1;">No clubs found</p>';
+            }
+
+            return clubs.map(club => `
+                <div class="card">
+                    <div class="img-placeholder">🎯</div>
+                    <span class="badge badge-primary">${club.category}</span>
+                    <h3 style="margin: 0.75rem 0;">${club.name}</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">
+                        ${Utils.truncate(club.description, 120)}
+                    </p>
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; font-size: 0.875rem;">
+                        <div style="margin-bottom: 0.5rem;">👥 ${Utils.getMemberCount(club.id)} members</div>
+                        <div>👨‍🏫 ${club.faculty_coordinator}</div>
+                    </div>
+                    <a onclick="showPage('club-details', {id: ${club.id}})" class="btn btn-primary" style="width: 100%;">View Details →</a>
+                </div>
+            `).join('');
+        }
+
+        function filterClubs(searchTerm) {
+            const filtered = DataStore.clubs.filter(club => 
+                club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                club.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            document.getElementById('clubsContainer').innerHTML = renderClubCards(filtered);
+        }
+
+        // ========================================
+        // CLUB DETAILS PAGE
+        // ========================================
+        function renderClubDetailsPage(clubId) {
+            const club = Utils.getClubById(clubId);
+            if (!club) {
+                Utils.showToast('Club not found', 'error');
+                showPage('clubs');
+                return;
+            }
+
+            const user = Utils.getCurrentUser();
+            const memberCount = Utils.getMemberCount(clubId);
+            const members = Utils.getClubMembers(clubId);
+            const approvedMembers = members.filter(m => m.status === 'approved');
+            const isAlreadyMember = user ? Utils.isUserInClub(clubId, user.id) : false;
+
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="container page-section">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="img-placeholder" style="height: 300px; font-size: 5rem;">🎯</div>
+                            <h1 style="margin-top: 1.5rem;">${club.name}</h1>
+                            <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+                                <span class="badge badge-primary">${club.category}</span>
+                                <span class="badge badge-success">${memberCount} members</span>
+                            </div>
+                            <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-secondary); margin: 1.5rem 0;">
+                                ${club.description}
+                            </p>
+                            
+                            <div class="card mt-3">
+                                <h3 style="margin-bottom: 1rem;">Club Leadership</h3>
+                                <div style="display: grid; gap: 1rem;">
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Faculty Coordinator</div>
+                                        <div style="font-weight: 600;">👨‍🏫 ${club.faculty_coordinator}</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Established</div>
+                                        <div style="font-weight: 600;">📅 ${Utils.formatDate(club.established_date)}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            ${approvedMembers.length > 0 ? `
+                                <div class="card mt-3">
+                                    <h3 style="margin-bottom: 1rem;">Members (${approvedMembers.length})</h3>
+                                    <div style="display: grid; gap: 0.75rem;">
+                                        ${approvedMembers.slice(0, 5).map(m => {
+                                            const memberUser = DataStore.users.find(u => u.id === m.user_id);
+                                            return `
+                                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg-secondary); border-radius: 8px;">
+                                                    <div>
+                                                        <div style="font-weight: 600;">${memberUser.name}</div>
+                                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">${memberUser.department}</div>
+                                                    </div>
+                                                    ${m.role === 'head' ? '<span class="badge badge-warning">Club Head</span>' : ''}
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div>
+                            <div class="card" style="position: sticky; top: 100px;">
+                                <h3 style="margin-bottom: 1rem;">Join This Club</h3>
+                                ${user ? (
+                                    isAlreadyMember ? 
+                                        '<div class="alert alert-success">You are already a member or have a pending request</div>' :
+                                        `<button onclick="joinClub(${clubId})" class="btn btn-accent" style="width: 100%;">Request to Join</button>`
+                                ) : (
+                                    '<p style="color: var(--text-secondary); margin-bottom: 1rem;">Please login to join this club</p>' +
+                                    '<a onclick="showPage(\'login\')" class="btn btn-primary" style="width: 100%;">Login to Join</a>'
+                                )}
+                                
+                                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                                    <h4 style="margin-bottom: 1rem;">Quick Stats</h4>
+                                    <div style="display: grid; gap: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Total Members</span>
+                                            <strong>${memberCount}</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Category</span>
+                                            <strong>${club.category}</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Active Since</span>
+                                            <strong>${new Date(club.established_date).getFullYear()}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function joinClub(clubId) {
+            const user = Utils.getCurrentUser();
+            if (!user) {
+                Utils.showToast('Please login first', 'error');
+                showPage('login');
+                return;
+            }
+
+            // Add membership request
+            const membership = {
+                id: DataStore.nextId.clubMembers++,
+                club_id: clubId,
+                user_id: user.id,
+                status: 'pending',
+                role: 'member',
+                joined_date: null
+            };
+
+            DataStore.clubMembers.push(membership);
+            
+            // Add notification
+            const notification = {
+                id: DataStore.nextId.notifications++,
+                user_id: user.id,
+                title: 'Membership Request Sent',
+                message: 'Your request to join the club has been submitted and is pending approval.',
+                type: 'general',
+                is_read: false,
+                created_at: new Date()
+            };
+            DataStore.notifications.push(notification);
+
+            Utils.showToast('Membership request sent successfully!', 'success');
+            renderClubDetailsPage(clubId);
+        }
+
+        // ========================================
+        // EVENTS PAGE
+        // ========================================
+        function renderEventsPage() {
+            const upcomingEvents = DataStore.events.filter(e => new Date(e.event_date) >= new Date());
+            
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="container page-section">
+                    <h1 style="margin-bottom: 2rem;">Upcoming Events</h1>
+                    <div class="card-grid">
+                        ${upcomingEvents.map(event => {
+                            const club = Utils.getClubById(event.club_id);
+                            const regCount = Utils.getEventRegistrationCount(event.id);
+                            return `
+                                <div class="card">
+                                    <div class="img-placeholder" style="background: linear-gradient(135deg, #e94560, #ff6b88); color: white;">🎉</div>
+                                    <h3 style="margin-bottom: 1rem;">${event.name}</h3>
+                                    <div style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                        <div style="margin-bottom: 0.5rem;">📅 ${Utils.formatDate(event.event_date)}</div>
+                                        <div style="margin-bottom: 0.5rem;">🕐 ${Utils.formatTime(event.event_time)}</div>
+                                        <div>📍 ${event.venue}</div>
+                                    </div>
+                                    <div style="padding: 1rem; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 1rem; font-size: 0.875rem;">
+                                        <div style="margin-bottom: 0.5rem;">Organized by: <strong>${club.name}</strong></div>
+                                        <div>Registered: ${regCount}${event.max_participants ? '/' + event.max_participants : ''}</div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                        ${Utils.truncate(event.description, 100)}
+                                    </p>
+                                    <a onclick="showPage('event-details', {id: ${event.id}})" class="btn btn-accent" style="width: 100%;">View Details & Register →</a>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // EVENT DETAILS PAGE
+        // ========================================
+        function renderEventDetailsPage(eventId) {
+            const event = Utils.getEventById(eventId);
+            if (!event) {
+                Utils.showToast('Event not found', 'error');
+                showPage('events');
+                return;
+            }
+
+            const club = Utils.getClubById(event.club_id);
+            const user = Utils.getCurrentUser();
+            const regCount = Utils.getEventRegistrationCount(eventId);
+            const isRegistered = user ? Utils.isUserRegisteredForEvent(eventId, user.id) : false;
+            const isFull = event.max_participants && regCount >= event.max_participants;
+
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="container page-section">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="img-placeholder" style="height: 350px; background: linear-gradient(135deg, #e94560, #ff6b88); color: white; font-size: 5rem;">🎉</div>
+                            <h1 style="margin-top: 1.5rem;">${event.name}</h1>
+                            <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+                                <span class="badge badge-primary">By ${club.name}</span>
+                                <span class="badge badge-success">${regCount} Registered</span>
+                            </div>
+
+                            <div class="card mt-3">
+                                <h3 style="margin-bottom: 1rem;">Event Details</h3>
+                                <div style="display: grid; gap: 1rem;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <span style="font-size: 1.5rem;">📅</span>
+                                        <div>
+                                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Date</div>
+                                            <div style="font-weight: 600;">${Utils.formatDate(event.event_date)}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <span style="font-size: 1.5rem;">🕐</span>
+                                        <div>
+                                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Time</div>
+                                            <div style="font-weight: 600;">${Utils.formatTime(event.event_time)}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <span style="font-size: 1.5rem;">📍</span>
+                                        <div>
+                                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Venue</div>
+                                            <div style="font-weight: 600;">${event.venue}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-3">
+                                <h3 style="margin-bottom: 1rem;">About This Event</h3>
+                                <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-secondary);">
+                                    ${event.description}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="card" style="position: sticky; top: 100px;">
+                                <h3 style="margin-bottom: 1rem;">Register for Event</h3>
+                                
+                                ${user ? (
+                                    isRegistered ? 
+                                        '<div class="alert alert-success">You are registered for this event!</div>' :
+                                        isFull ?
+                                            '<div class="alert alert-error">Event is full</div>' :
+                                            `<button onclick="registerForEvent(${eventId})" class="btn btn-accent" style="width: 100%;">Register Now</button>`
+                                ) : (
+                                    '<p style="color: var(--text-secondary); margin-bottom: 1rem;">Please login to register for this event</p>' +
+                                    '<a onclick="showPage(\'login\')" class="btn btn-primary" style="width: 100%;">Login to Register</a>'
+                                )}
+
+                                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                                    <h4 style="margin-bottom: 1rem;">Event Info</h4>
+                                    <div style="display: grid; gap: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Organized By</span>
+                                            <strong>${club.name}</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Registered</span>
+                                            <strong>${regCount}${event.max_participants ? '/' + event.max_participants : ''}</strong>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: var(--text-secondary);">Deadline</span>
+                                            <strong>${Utils.formatDate(event.registration_deadline)}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function registerForEvent(eventId) {
+            const user = Utils.getCurrentUser();
+            if (!user) {
+                Utils.showToast('Please login first', 'error');
+                showPage('login');
+                return;
+            }
+
+            const registration = {
+                id: DataStore.nextId.eventRegistrations++,
+                event_id: eventId,
+                user_id: user.id,
+                status: 'registered',
+                registration_date: new Date()
+            };
+
+            DataStore.eventRegistrations.push(registration);
+            
+            const event = Utils.getEventById(eventId);
+            const notification = {
+                id: DataStore.nextId.notifications++,
+                user_id: user.id,
+                title: 'Event Registration Successful',
+                message: `You have successfully registered for ${event.name}`,
+                type: 'general',
+                is_read: false,
+                created_at: new Date()
+            };
+            DataStore.notifications.push(notification);
+
+            Utils.showToast('Successfully registered for event!', 'success');
+            renderEventDetailsPage(eventId);
+        }
+
+        // ========================================
+        // STUDENT DASHBOARD
+        // ========================================
+        function renderStudentDashboard() {
+            const user = Utils.getCurrentUser();
+            if (!user || user.role !== 'student') {
+                Utils.showToast('Access denied', 'error');
+                showPage('home');
+                return;
+            }
+
+            const myClubs = Utils.getUserClubs(user.id);
+            const myEvents = Utils.getUserEvents(user.id);
+            const upcomingEvents = DataStore.events.filter(e => new Date(e.event_date) >= new Date()).slice(0, 5);
+
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="container page-section">
+                    <h1 style="margin-bottom: 0.5rem;">Welcome back, ${user.name.split(' ')[0]}!</h1>
+                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">Here's what's happening in your clubs</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${myClubs.filter(c => c.status === 'approved').length}</div>
+                            <div class="stat-label">My Clubs</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #e94560, #ff6b88);">
+                            <div class="stat-value">${myEvents.length}</div>
+                            <div class="stat-label">Registered Events</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #16a34a, #22c55e);">
+                            <div class="stat-value">${upcomingEvents.length}</div>
+                            <div class="stat-label">Upcoming Events</div>
+                        </div>
+                    </div>
+
+                    <h2 style="margin: 3rem 0 1.5rem;">My Clubs</h2>
+                    <div class="card-grid">
+                        ${myClubs.length === 0 ? 
+                            '<p style="text-align: center; grid-column: 1/-1;">You haven\'t joined any clubs yet. <a onclick="showPage(\'clubs\')" style="color: var(--accent); cursor: pointer;">Browse clubs</a></p>' :
+                            myClubs.map(club => `
+                                <div class="card">
+                                    <span class="badge badge-${club.status === 'approved' ? 'success' : 'warning'}">${club.status}</span>
+                                    <h3 style="margin: 0.75rem 0;">${club.name}</h3>
+                                    <p style="color: var(--text-secondary);">${Utils.truncate(club.description, 100)}</p>
+                                    <a onclick="showPage('club-details', {id: ${club.id}})" class="btn btn-outline btn-sm mt-2">View Club</a>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+
+                    <h2 style="margin: 3rem 0 1.5rem;">My Registered Events</h2>
+                    <div class="card-grid">
+                        ${myEvents.length === 0 ?
+                            '<p style="text-align: center; grid-column: 1/-1;">No registered events. <a onclick="showPage(\'events\')" style="color: var(--accent); cursor: pointer;">Browse events</a></p>' :
+                            myEvents.map(event => `
+                                <div class="card">
+                                    <h3 style="margin-bottom: 1rem;">${event.name}</h3>
+                                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">📅 ${Utils.formatDate(event.event_date)} at ${Utils.formatTime(event.event_time)}</p>
+                                    <p style="color: var(--text-secondary);">📍 ${event.venue}</p>
+                                    <a onclick="showPage('event-details', {id: ${event.id}})" class="btn btn-accent btn-sm mt-2">View Event</a>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // ADMIN DASHBOARD
+        // ========================================
+        function renderAdminDashboard() {
+            const user = Utils.getCurrentUser();
+            if (!user || user.role !== 'admin') {
+                Utils.showToast('Access denied', 'error');
+                showPage('home');
+                return;
+            }
+
+            const totalClubs = DataStore.clubs.length;
+            const totalMembers = DataStore.clubMembers.filter(cm => cm.status === 'approved').length;
+            const totalEvents = DataStore.events.length;
+            const pendingRequests = DataStore.clubMembers.filter(cm => cm.status === 'pending').length;
+
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="dashboard-layout">
+                    <aside class="sidebar">
+                        <ul class="sidebar-menu">
+                            <li><a href="#" class="active" onclick="showAdminSection('overview')">📊 Overview</a></li>
+                            <li><a href="#" onclick="showAdminSection('clubs')">🎯 Manage Clubs</a></li>
+                            <li><a href="#" onclick="showAdminSection('events')">📅 Manage Events</a></li>
+                            <li><a href="#" onclick="showAdminSection('requests')">⏳ Pending Requests</a></li>
+                            <li><a href="#" onclick="showAdminSection('database')">💾 Database</a></li>
+                        </ul>
+                    </aside>
+                    <main class="main-content">
+                        <div id="adminContent">
+                            <h1 style="margin-bottom: 2rem;">Dashboard Overview</h1>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value">${totalClubs}</div>
+                                    <div class="stat-label">Total Clubs</div>
+                                </div>
+                                <div class="stat-card" style="background: linear-gradient(135deg, #e94560, #ff6b88);">
+                                    <div class="stat-value">${totalMembers}</div>
+                                    <div class="stat-label">Total Members</div>
+                                </div>
+                                <div class="stat-card" style="background: linear-gradient(135deg, #16a34a, #22c55e);">
+                                    <div class="stat-value">${totalEvents}</div>
+                                    <div class="stat-label">Active Events</div>
+                                </div>
+                                <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                                    <div class="stat-value">${pendingRequests}</div>
+                                    <div class="stat-label">Pending Requests</div>
+                                </div>
+                            </div>
+
+                            <h2 style="margin: 3rem 0 1.5rem;">Quick Actions</h2>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button onclick="showCreateClubModal()" class="btn btn-primary">+ Create New Club</button>
+                                <button onclick="showCreateEventModal()" class="btn btn-accent">+ Create New Event</button>
+                                <button onclick="showAdminSection('requests')" class="btn btn-outline">View Pending Requests (${pendingRequests})</button>
+                            </div>
+
+                            <h2 style="margin: 3rem 0 1.5rem;">Recent Activity</h2>
+                            <div class="card">
+                                <div style="padding: 1rem; text-align: center; color: var(--text-secondary);">
+                                    <p>Activity feed coming soon...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            `;
+        }
+
+        function showAdminSection(section) {
+            const adminContent = document.getElementById('adminContent');
+            
+            // Update active state
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+
+            switch(section) {
+                case 'overview':
+                    renderAdminDashboard();
+                    break;
+                case 'clubs':
+                    renderAdminClubsSection();
+                    break;
+                case 'events':
+                    renderAdminEventsSection();
+                    break;
+                case 'requests':
+                    renderAdminRequestsSection();
+                    break;
+                case 'database':
+                    renderAdminDatabaseSection();
+                    break;
+            }
+        }
+
+        function renderAdminClubsSection() {
+            const adminContent = document.getElementById('adminContent');
+            adminContent.innerHTML = `
+                <div class="flex-between mb-3">
+                    <h1>Manage Clubs</h1>
+                    <button onclick="showCreateClubModal()" class="btn btn-primary">+ Create Club</button>
+                </div>
+                <div class="card-grid">
+                    ${DataStore.clubs.map(club => `
+                        <div class="card">
+                            <h3>${club.name}</h3>
+                            <p style="color: var(--text-secondary); margin: 0.5rem 0;">${Utils.getMemberCount(club.id)} members</p>
+                            <p style="color: var(--text-secondary);">${club.faculty_coordinator}</p>
+                            <div class="flex gap-1 mt-2">
+                                <button onclick="editClub(${club.id})" class="btn btn-sm btn-outline">Edit</button>
+                                <button onclick="deleteClub(${club.id})" class="btn btn-sm btn-outline" style="color: var(--danger); border-color: var(--danger);">Delete</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderAdminEventsSection() {
+            const adminContent = document.getElementById('adminContent');
+            adminContent.innerHTML = `
+                <div class="flex-between mb-3">
+                    <h1>Manage Events</h1>
+                    <button onclick="showCreateEventModal()" class="btn btn-accent">+ Create Event</button>
+                </div>
+                <div class="card-grid">
+                    ${DataStore.events.map(event => {
+                        const club = Utils.getClubById(event.club_id);
+                        return `
+                            <div class="card">
+                                <h3>${event.name}</h3>
+                                <p style="color: var(--text-secondary);">${Utils.formatDate(event.event_date)} at ${Utils.formatTime(event.event_time)}</p>
+                                <p style="color: var(--text-secondary);">${event.venue}</p>
+                                <p style="margin-top: 0.5rem;"><strong>${Utils.getEventRegistrationCount(event.id)}</strong> registered</p>
+                                <div class="flex gap-1 mt-2">
+                                    <button onclick="editEvent(${event.id})" class="btn btn-sm btn-outline">Edit</button>
+                                    <button onclick="deleteEvent(${event.id})" class="btn btn-sm btn-outline" style="color: var(--danger); border-color: var(--danger);">Delete</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderAdminRequestsSection() {
+            const adminContent = document.getElementById('adminContent');
+            const pendingRequests = DataStore.clubMembers.filter(cm => cm.status === 'pending');
+
+            adminContent.innerHTML = `
+                <h1 style="margin-bottom: 2rem;">Pending Membership Requests</h1>
+                ${pendingRequests.length === 0 ? 
+                    '<div class="card"><p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No pending requests</p></div>' :
+                    `<div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Club</th>
+                                    <th>Department</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${pendingRequests.map(req => {
+                                    const user = DataStore.users.find(u => u.id === req.user_id);
+                                    const club = Utils.getClubById(req.club_id);
+                                    return `
+                                        <tr>
+                                            <td>
+                                                <div style="font-weight: 600;">${user.name}</div>
+                                                <div style="font-size: 0.875rem; color: var(--text-secondary);">${user.email}</div>
+                                            </td>
+                                            <td>${club.name}</td>
+                                            <td>${user.department}</td>
+                                            <td>
+                                                <button onclick="approveMembership(${req.id})" class="btn btn-sm btn-success">Approve</button>
+                                                <button onclick="rejectMembership(${req.id})" class="btn btn-sm btn-danger">Reject</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>`
+                }
+            `;
+        }
+
+        function approveMembership(membershipId) {
+            const membership = DataStore.clubMembers.find(cm => cm.id === membershipId);
+            if (membership) {
+                membership.status = 'approved';
+                membership.joined_date = new Date().toISOString().split('T')[0];
+                
+                const club = Utils.getClubById(membership.club_id);
+                const notification = {
+                    id: DataStore.nextId.notifications++,
+                    user_id: membership.user_id,
+                    title: 'Membership Approved!',
+                    message: `Your request to join ${club.name} has been approved. Welcome to the club!`,
+                    type: 'club_approval',
+                    is_read: false,
+                    created_at: new Date()
+                };
+                DataStore.notifications.push(notification);
+
+                Utils.showToast('Membership approved successfully!', 'success');
+                renderAdminRequestsSection();
+            }
+        }
+
+        function rejectMembership(membershipId) {
+            const membership = DataStore.clubMembers.find(cm => cm.id === membershipId);
+            if (membership) {
+                membership.status = 'rejected';
+                
+                const club = Utils.getClubById(membership.club_id);
+                const notification = {
+                    id: DataStore.nextId.notifications++,
+                    user_id: membership.user_id,
+                    title: 'Membership Request Update',
+                    message: `Your request to join ${club.name} was not approved at this time.`,
+                    type: 'club_rejection',
+                    is_read: false,
+                    created_at: new Date()
+                };
+                DataStore.notifications.push(notification);
+
+                Utils.showToast('Membership rejected', 'success');
+                renderAdminRequestsSection();
+            }
+        }
+
+        function showCreateClubModal() {
+            const modalContainer = document.getElementById('modalContainer');
+            modalContainer.innerHTML = `
+                <div class="modal-overlay active" onclick="closeModal(event)">
+                    <div class="modal" onclick="event.stopPropagation()">
+                        <div class="modal-header">
+                            <h2>Create New Club</h2>
+                        </div>
+                        <div class="modal-body">
+                            <form onsubmit="handleCreateClub(event)">
+                                <div class="form-group">
+                                    <label class="form-label">Club Name</label>
+                                    <input type="text" class="form-input" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category" required>
+                                        <option value="">Select Category</option>
+                                        <option value="Technical">Technical</option>
+                                        <option value="Cultural">Cultural</option>
+                                        <option value="Arts">Arts</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Social">Social</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea" name="description" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Faculty Coordinator</label>
+                                    <input type="text" class="form-input" name="faculty_coordinator" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Create Club</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleCreateClub(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const newClub = {
+                id: DataStore.nextId.clubs++,
+                name: formData.get('name'),
+                description: formData.get('description'),
+                category: formData.get('category'),
+                faculty_coordinator: formData.get('faculty_coordinator'),
+                student_head_id: null,
+                established_date: new Date().toISOString().split('T')[0]
+            };
+
+            DataStore.clubs.push(newClub);
+            Utils.showToast('Club created successfully!', 'success');
+            closeModal();
+            renderAdminClubsSection();
+        }
+
+        function showCreateEventModal() {
+            const modalContainer = document.getElementById('modalContainer');
+            modalContainer.innerHTML = `
+                <div class="modal-overlay active" onclick="closeModal(event)">
+                    <div class="modal" onclick="event.stopPropagation()">
+                        <div class="modal-header">
+                            <h2>Create New Event</h2>
+                        </div>
+                        <div class="modal-body">
+                            <form onsubmit="handleCreateEvent(event)">
+                                <div class="form-group">
+                                    <label class="form-label">Event Name</label>
+                                    <input type="text" class="form-input" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Club</label>
+                                    <select class="form-select" name="club_id" required>
+                                        <option value="">Select Club</option>
+                                        ${DataStore.clubs.map(club => `<option value="${club.id}">${club.name}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea" name="description" required></textarea>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div class="form-group">
+                                        <label class="form-label">Date</label>
+                                        <input type="date" class="form-input" name="event_date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Time</label>
+                                        <input type="time" class="form-input" name="event_time" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Venue</label>
+                                    <input type="text" class="form-input" name="venue" required>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div class="form-group">
+                                        <label class="form-label">Max Participants</label>
+                                        <input type="number" class="form-input" name="max_participants" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Registration Deadline</label>
+                                        <input type="date" class="form-input" name="registration_deadline" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
+                                    <button type="submit" class="btn btn-accent">Create Event</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleCreateEvent(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const user = Utils.getCurrentUser();
+            
+            const newEvent = {
+                id: DataStore.nextId.events++,
+                club_id: parseInt(formData.get('club_id')),
+                name: formData.get('name'),
+                description: formData.get('description'),
+                event_date: formData.get('event_date'),
+                event_time: formData.get('event_time'),
+                venue: formData.get('venue'),
+                max_participants: parseInt(formData.get('max_participants')),
+                registration_deadline: formData.get('registration_deadline'),
+                created_by: user.id
+            };
+
+            DataStore.events.push(newEvent);
+            Utils.showToast('Event created successfully!', 'success');
+            closeModal();
+            renderAdminEventsSection();
+        }
+
+        function closeModal(event) {
+            if (event && event.target.classList.contains('modal')) {
+                return;
+            }
+            document.getElementById('modalContainer').innerHTML = '';
+        }
+
+        function editClub(clubId) {
+            Utils.showToast('Edit functionality - coming soon!', 'success');
+        }
+
+        function deleteClub(clubId) {
+            if (confirm('Are you sure you want to delete this club?')) {
+                const index = DataStore.clubs.findIndex(c => c.id === clubId);
+                if (index > -1) {
+                    DataStore.clubs.splice(index, 1);
+                    Utils.showToast('Club deleted successfully!', 'success');
+                    renderAdminClubsSection();
+                }
+            }
+        }
+
+        function editEvent(eventId) {
+            Utils.showToast('Edit functionality - coming soon!', 'success');
+        }
+
+        function deleteEvent(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                const index = DataStore.events.findIndex(e => e.id === eventId);
+                if (index > -1) {
+                    DataStore.events.splice(index, 1);
+                    Utils.showToast('Event deleted successfully!', 'success');
+                    renderAdminEventsSection();
+                }
+            }
+        }
+
+        // ========================================
+        // BACKEND API LAYER
+        // ========================================
+        const BackendAPI = {
+            // Configuration
+            config: {
+                apiUrl: '/api', // In production, this would be your actual API endpoint
+                localStorage: true,
+                autoSave: true
+            },
+
+            // Initialize backend connection
+            init: function() {
+                if (this.config.localStorage) {
+                    this.loadFromLocalStorage();
+                }
+                console.log('Backend API initialized');
+            },
+
+            // Save all data to localStorage (simulating database)
+            saveToLocalStorage: function() {
+                try {
+                    localStorage.setItem('clubManagement_users', JSON.stringify(DataStore.users));
+                    localStorage.setItem('clubManagement_clubs', JSON.stringify(DataStore.clubs));
+                    localStorage.setItem('clubManagement_events', JSON.stringify(DataStore.events));
+                    localStorage.setItem('clubManagement_memberships', JSON.stringify(DataStore.memberships));
+                    localStorage.setItem('clubManagement_registrations', JSON.stringify(DataStore.registrations));
+                    localStorage.setItem('clubManagement_notifications', JSON.stringify(DataStore.notifications));
+                    localStorage.setItem('clubManagement_nextId', JSON.stringify(DataStore.nextId));
+                    console.log('Data saved to localStorage');
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error saving to localStorage:', error);
+                    return { success: false, error: error.message };
+                }
+            },
+
+            // Load all data from localStorage
+            loadFromLocalStorage: function() {
+                try {
+                    const users = localStorage.getItem('clubManagement_users');
+                    const clubs = localStorage.getItem('clubManagement_clubs');
+                    const events = localStorage.getItem('clubManagement_events');
+                    const memberships = localStorage.getItem('clubManagement_memberships');
+                    const registrations = localStorage.getItem('clubManagement_registrations');
+                    const notifications = localStorage.getItem('clubManagement_notifications');
+                    const nextId = localStorage.getItem('clubManagement_nextId');
+
+                    if (users) DataStore.users = JSON.parse(users);
+                    if (clubs) DataStore.clubs = JSON.parse(clubs);
+                    if (events) DataStore.events = JSON.parse(events);
+                    if (memberships) DataStore.memberships = JSON.parse(memberships);
+                    if (registrations) DataStore.registrations = JSON.parse(registrations);
+                    if (notifications) DataStore.notifications = JSON.parse(notifications);
+                    if (nextId) DataStore.nextId = JSON.parse(nextId);
+
+                    console.log('Data loaded from localStorage');
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error loading from localStorage:', error);
+                    return { success: false, error: error.message };
+                }
+            },
+
+            // Clear all data
+            clearData: function() {
+                localStorage.removeItem('clubManagement_users');
+                localStorage.removeItem('clubManagement_clubs');
+                localStorage.removeItem('clubManagement_events');
+                localStorage.removeItem('clubManagement_memberships');
+                localStorage.removeItem('clubManagement_registrations');
+                localStorage.removeItem('clubManagement_notifications');
+                localStorage.removeItem('clubManagement_nextId');
+                console.log('All data cleared');
+            },
+
+            // Export data to JSON
+            exportData: function() {
+                const data = {
+                    users: DataStore.users,
+                    clubs: DataStore.clubs,
+                    events: DataStore.events,
+                    memberships: DataStore.memberships,
+                    registrations: DataStore.registrations,
+                    notifications: DataStore.notifications,
+                    nextId: DataStore.nextId,
+                    exportDate: new Date().toISOString()
+                };
+                return data;
+            },
+
+            // Import data from JSON
+            importData: function(data) {
+                try {
+                    if (data.users) DataStore.users = data.users;
+                    if (data.clubs) DataStore.clubs = data.clubs;
+                    if (data.events) DataStore.events = data.events;
+                    if (data.memberships) DataStore.memberships = data.memberships;
+                    if (data.registrations) DataStore.registrations = data.registrations;
+                    if (data.notifications) DataStore.notifications = data.notifications;
+                    if (data.nextId) DataStore.nextId = data.nextId;
+                    
+                    this.saveToLocalStorage();
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    return { success: false, error: error.message };
+                }
+            },
+
+            // User API endpoints
+            users: {
+                create: function(userData) {
+                    try {
+                        // Validate required fields
+                        if (!userData.email || !userData.password || !userData.full_name) {
+                            return { success: false, error: 'Missing required fields' };
+                        }
+
+                        // Check if email already exists
+                        if (DataStore.users.find(u => u.email === userData.email)) {
+                            return { success: false, error: 'Email already exists' };
+                        }
+
+                        const newUser = {
+                            id: DataStore.nextId.users++,
+                            email: userData.email,
+                            password: userData.password, // In production, this should be hashed
+                            full_name: userData.full_name,
+                            role: userData.role || 'student',
+                            department: userData.department || null,
+                            year: userData.year || null,
+                            created_at: new Date().toISOString()
+                        };
+
+                        DataStore.users.push(newUser);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: newUser };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                update: function(userId, userData) {
+                    try {
+                        const user = DataStore.users.find(u => u.id === userId);
+                        if (!user) {
+                            return { success: false, error: 'User not found' };
+                        }
+
+                        Object.assign(user, userData);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: user };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                delete: function(userId) {
+                    try {
+                        const index = DataStore.users.findIndex(u => u.id === userId);
+                        if (index === -1) {
+                            return { success: false, error: 'User not found' };
+                        }
+
+                        DataStore.users.splice(index, 1);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                getById: function(userId) {
+                    const user = DataStore.users.find(u => u.id === userId);
+                    return user ? { success: true, data: user } : { success: false, error: 'User not found' };
+                },
+
+                authenticate: function(email, password) {
+                    const user = DataStore.users.find(u => u.email === email && u.password === password);
+                    if (user) {
+                        sessionStorage.setItem('currentUser', JSON.stringify(user));
+                        return { success: true, data: user };
+                    }
+                    return { success: false, error: 'Invalid credentials' };
+                }
+            },
+
+            // Club API endpoints
+            clubs: {
+                create: function(clubData) {
+                    try {
+                        const newClub = {
+                            id: DataStore.nextId.clubs++,
+                            name: clubData.name,
+                            description: clubData.description,
+                            category: clubData.category,
+                            faculty_coordinator: clubData.faculty_coordinator,
+                            student_head_id: clubData.student_head_id || null,
+                            established_date: clubData.established_date || new Date().toISOString().split('T')[0],
+                            created_at: new Date().toISOString()
+                        };
+
+                        DataStore.clubs.push(newClub);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: newClub };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                update: function(clubId, clubData) {
+                    try {
+                        const club = DataStore.clubs.find(c => c.id === clubId);
+                        if (!club) {
+                            return { success: false, error: 'Club not found' };
+                        }
+
+                        Object.assign(club, clubData);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: club };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                delete: function(clubId) {
+                    try {
+                        const index = DataStore.clubs.findIndex(c => c.id === clubId);
+                        if (index === -1) {
+                            return { success: false, error: 'Club not found' };
+                        }
+
+                        DataStore.clubs.splice(index, 1);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                getAll: function(filters = {}) {
+                    let clubs = [...DataStore.clubs];
+                    
+                    if (filters.category) {
+                        clubs = clubs.filter(c => c.category === filters.category);
+                    }
+                    
+                    return { success: true, data: clubs };
+                },
+
+                getById: function(clubId) {
+                    const club = DataStore.clubs.find(c => c.id === clubId);
+                    return club ? { success: true, data: club } : { success: false, error: 'Club not found' };
+                }
+            },
+
+            // Event API endpoints
+            events: {
+                create: function(eventData) {
+                    try {
+                        const newEvent = {
+                            id: DataStore.nextId.events++,
+                            club_id: eventData.club_id,
+                            name: eventData.name,
+                            description: eventData.description,
+                            event_date: eventData.event_date,
+                            event_time: eventData.event_time,
+                            venue: eventData.venue,
+                            max_participants: eventData.max_participants,
+                            registration_deadline: eventData.registration_deadline,
+                            created_by: eventData.created_by,
+                            created_at: new Date().toISOString()
+                        };
+
+                        DataStore.events.push(newEvent);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: newEvent };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                update: function(eventId, eventData) {
+                    try {
+                        const event = DataStore.events.find(e => e.id === eventId);
+                        if (!event) {
+                            return { success: false, error: 'Event not found' };
+                        }
+
+                        Object.assign(event, eventData);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: event };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                delete: function(eventId) {
+                    try {
+                        const index = DataStore.events.findIndex(e => e.id === eventId);
+                        if (index === -1) {
+                            return { success: false, error: 'Event not found' };
+                        }
+
+                        DataStore.events.splice(index, 1);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                getUpcoming: function() {
+                    const today = new Date().toISOString().split('T')[0];
+                    const upcoming = DataStore.events.filter(e => e.event_date >= today);
+                    return { success: true, data: upcoming };
+                },
+
+                getByClub: function(clubId) {
+                    const events = DataStore.events.filter(e => e.club_id === clubId);
+                    return { success: true, data: events };
+                }
+            },
+
+            // Membership API endpoints
+            memberships: {
+                create: function(membershipData) {
+                    try {
+                        // Check if membership already exists
+                        const existing = DataStore.memberships.find(
+                            m => m.user_id === membershipData.user_id && 
+                                 m.club_id === membershipData.club_id
+                        );
+                        
+                        if (existing) {
+                            return { success: false, error: 'Membership already exists' };
+                        }
+
+                        const newMembership = {
+                            id: DataStore.nextId.memberships++,
+                            user_id: membershipData.user_id,
+                            club_id: membershipData.club_id,
+                            status: membershipData.status || 'pending',
+                            joined_date: new Date().toISOString().split('T')[0]
+                        };
+
+                        DataStore.memberships.push(newMembership);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: newMembership };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                updateStatus: function(membershipId, status) {
+                    try {
+                        const membership = DataStore.memberships.find(m => m.id === membershipId);
+                        if (!membership) {
+                            return { success: false, error: 'Membership not found' };
+                        }
+
+                        membership.status = status;
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: membership };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                getByUser: function(userId) {
+                    const memberships = DataStore.memberships.filter(m => m.user_id === userId);
+                    return { success: true, data: memberships };
+                },
+
+                getByClub: function(clubId) {
+                    const memberships = DataStore.memberships.filter(m => m.club_id === clubId);
+                    return { success: true, data: memberships };
+                }
+            },
+
+            // Registration API endpoints
+            registrations: {
+                create: function(registrationData) {
+                    try {
+                        // Check if registration already exists
+                        const existing = DataStore.registrations.find(
+                            r => r.user_id === registrationData.user_id && 
+                                 r.event_id === registrationData.event_id
+                        );
+                        
+                        if (existing) {
+                            return { success: false, error: 'Already registered for this event' };
+                        }
+
+                        const newRegistration = {
+                            id: DataStore.nextId.registrations++,
+                            user_id: registrationData.user_id,
+                            event_id: registrationData.event_id,
+                            registration_date: new Date().toISOString(),
+                            status: registrationData.status || 'registered'
+                        };
+
+                        DataStore.registrations.push(newRegistration);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true, data: newRegistration };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                cancel: function(registrationId) {
+                    try {
+                        const index = DataStore.registrations.findIndex(r => r.id === registrationId);
+                        if (index === -1) {
+                            return { success: false, error: 'Registration not found' };
+                        }
+
+                        DataStore.registrations.splice(index, 1);
+                        BackendAPI.saveToLocalStorage();
+                        return { success: true };
+                    } catch (error) {
+                        return { success: false, error: error.message };
+                    }
+                },
+
+                getByUser: function(userId) {
+                    const registrations = DataStore.registrations.filter(r => r.user_id === userId);
+                    return { success: true, data: registrations };
+                },
+
+                getByEvent: function(eventId) {
+                    const registrations = DataStore.registrations.filter(r => r.event_id === eventId);
+                    return { success: true, data: registrations };
+                }
+            },
+
+            // Analytics API
+            analytics: {
+                getDashboardStats: function() {
+                    return {
+                        success: true,
+                        data: {
+                            totalClubs: DataStore.clubs.length,
+                            totalEvents: DataStore.events.length,
+                            totalUsers: DataStore.users.length,
+                            totalMemberships: DataStore.memberships.filter(m => m.status === 'approved').length,
+                            pendingRequests: DataStore.memberships.filter(m => m.status === 'pending').length,
+                            upcomingEvents: DataStore.events.filter(e => e.event_date >= new Date().toISOString().split('T')[0]).length
+                        }
+                    };
+                },
+
+                getClubStats: function(clubId) {
+                    const members = DataStore.memberships.filter(m => m.club_id === clubId && m.status === 'approved').length;
+                    const events = DataStore.events.filter(e => e.club_id === clubId).length;
+                    const upcomingEvents = DataStore.events.filter(e => e.club_id === clubId && e.event_date >= new Date().toISOString().split('T')[0]).length;
+                    
+                    return {
+                        success: true,
+                        data: {
+                            totalMembers: members,
+                            totalEvents: events,
+                            upcomingEvents: upcomingEvents
+                        }
+                    };
+                }
+            }
+        };
+
+        // Auto-save functionality
+        setInterval(function() {
+            if (BackendAPI.config.autoSave) {
+                BackendAPI.saveToLocalStorage();
+            }
+        }, 30000); // Auto-save every 30 seconds
+
+        // Add export/import functionality
+        function exportDatabaseJSON() {
+            const data = BackendAPI.exportData();
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `club-management-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            Utils.showToast('Database exported successfully!', 'success');
+        }
+
+        function importDatabaseJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            const result = BackendAPI.importData(data);
+                            if (result.success) {
+                                Utils.showToast('Database imported successfully!', 'success');
+                                location.reload();
+                            } else {
+                                Utils.showToast('Import failed: ' + result.error, 'error');
+                            }
+                        } catch (error) {
+                            Utils.showToast('Invalid JSON file', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function resetDatabase() {
+            if (confirm('Are you sure you want to reset the database? This will delete all data!')) {
+                if (confirm('This action cannot be undone. Are you absolutely sure?')) {
+                    BackendAPI.clearData();
+                    Utils.showToast('Database reset complete. Reloading...', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                }
+            }
+        }
+
+        // Add database management to admin menu
+        function renderAdminDatabaseSection() {
+            const mainContent = document.getElementById('mainContent');
+            const stats = BackendAPI.analytics.getDashboardStats().data;
+            
+            mainContent.innerHTML = `
+                <div class="section-header">
+                    <h2>Database Management</h2>
+                </div>
+                
+                <div class="stats-grid" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.totalUsers}</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.totalClubs}</div>
+                        <div class="stat-label">Total Clubs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.totalEvents}</div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.totalMemberships}</div>
+                        <div class="stat-label">Active Memberships</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Database Operations</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Manage your database with export, import, and reset functionality.
+                    </p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <button onclick="exportDatabaseJSON()" class="btn btn-primary">
+                            📥 Export Database (JSON)
+                        </button>
+                        <button onclick="importDatabaseJSON()" class="btn btn-outline">
+                            📤 Import Database (JSON)
+                        </button>
+                        <button onclick="BackendAPI.saveToLocalStorage(); Utils.showToast('Data saved!', 'success');" class="btn btn-success">
+                            💾 Save Current State
+                        </button>
+                        <button onclick="resetDatabase()" class="btn btn-danger">
+                            ⚠️ Reset Database
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Auto-Save Status</h3>
+                    <p style="color: var(--text-secondary);">
+                        Auto-save is currently <strong>${BackendAPI.config.autoSave ? 'ENABLED' : 'DISABLED'}</strong>. 
+                        Data is automatically saved every 30 seconds.
+                    </p>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">SQL Database Connection</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        For production deployment, connect to the SQL database using the provided schema.
+                        See <code>database-schema.sql</code> for setup instructions.
+                    </p>
+                    <div class="alert alert-info" style="background: #e0f2fe; padding: 1rem; border-radius: 8px; border-left: 4px solid #0284c7;">
+                        <strong>Note:</strong> Currently using localStorage for data persistence. 
+                        To connect to a real SQL database, implement the backend API endpoints in your server.
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        window.onload = function() {
+            BackendAPI.init();
+            updateNavigation();
+            showPage('home');
+        };
+    </script>
+</body>
+</html>
